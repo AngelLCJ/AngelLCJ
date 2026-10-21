@@ -1,0 +1,6 @@
+- { name: clinic-booking, stack: [TypeScript, Fastify, Next.js, Stripe, BullMQ], purpose: "Medical booking platform: payments + job queues", redact: "multi-tenant scheduling engine" }
+- { name: habitcare-mvp, stack: [TypeScript, pnpm monorepo, Vercel, Render], purpose: "Habit tracker for nutritionist patients", redact: "patient adherence scoring" }
+- { name: AppEscanerCredencial, stack: [Swift, iOS], purpose: "Scans UNAM student IDs to fill loan records", redact: "barcode capture pipeline" }
+- { name: claude-code-dotfiles, stack: [Shell, Claude Code hooks], purpose: "My Claude Code rules, hooks and guards, synced", redact: "agent guard policies" }
+- { name: TicketSystemForm, stack: [JavaScript, HTML, CSS], purpose: "Ticket intake and tracking form", redact: "routing rules" }
+- { name: ventasproject, stack: [JavaScript, TypeScript], purpose: "Sales management project", redact: "pricing logic" }

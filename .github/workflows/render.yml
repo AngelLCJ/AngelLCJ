@@ -1,0 +1,40 @@
+name: render tower
+on:
+  schedule:
+    - cron: "7 * * * *" # hourly: duty shift + fresh stats
+  push:
+    branches: [main]
+    paths: ["data/**", "config/**", "src/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write # keeps the `landing` label in place for the issue form
+
+concurrency:
+  group: tower-assets
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm test
+      - name: Ensure the landing label exists
+        run: gh label create landing --color 39ff6a --description "Visitor landing request" --force
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Drop landings of deleted accounts
+        run: npx tsx src/landings/handle-issue.ts --prune
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: npm run build
+      - name: Commit and push if anything changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          scripts/commit-and-push.sh "chore: refresh tower assets" assets data

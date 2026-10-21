@@ -1,0 +1,42 @@
+name: tower landings
+on:
+  issues:
+    types: [opened]
+  schedule:
+    - cron: "37 * * * *" # hourly sweep picks up any landing a cancelled or failed run left open
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: tower-landings
+  cancel-in-progress: false
+
+jobs:
+  land:
+    if: github.event_name != 'issues' || contains(github.event.issue.labels.*.name, 'landing')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - name: Record every open landing request
+        run: npx tsx src/landings/handle-issue.ts --sweep
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: npm test
+      - run: npm run build
+      - name: Commit and push if anything changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          scripts/commit-and-push.sh "chore: land visitors on the radar" assets data
+      # Only answered once the radar is published; on any earlier failure the
+      # issues stay open and the next sweep retries them.
+      - name: Answer, close and lock
+        run: npx tsx src/landings/handle-issue.ts --reply
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

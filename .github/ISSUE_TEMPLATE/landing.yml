@@ -1,0 +1,15 @@
+name: Request landing
+description: Put your GitHub username on the tower's radar.
+title: landing
+labels: [landing]
+body:
+  - type: markdown
+    attributes:
+      value: Submit this form and the tower will put you on the radar. Only your GitHub username is shown.
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: Clearance
+      options:
+        - label: I want my username on the radar
+          required: true

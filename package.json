@@ -1,0 +1,24 @@
+{
+  "name": "angellcj-control-tower",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "build": "tsx src/build.ts",
+    "refresh-stats": "tsx src/stats/refresh.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "fast-xml-parser": "^5.11.2",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5"
+  },
+  "dependencies": {
+    "yaml": "^2.9.1"
+  }
+}

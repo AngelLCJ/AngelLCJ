@@ -1,0 +1,30 @@
+name: feed the shark
+on:
+  schedule:
+    - cron: "17 6 * * *" # daily
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tower-assets
+  cancel-in-progress: false
+
+jobs:
+  shark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npx tsx src/shark/cli.ts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: npm test
+      - name: Commit and push if anything changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          scripts/commit-and-push.sh "chore: feed the shark" assets

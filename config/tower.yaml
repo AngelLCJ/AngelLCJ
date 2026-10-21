@@ -1,0 +1,12 @@
+fleet: [CLAUDE, CODEX]
+shift: { start: "08:00", end: "22:00" }
+radarSeed: 20261020
+whoami:
+  - "Computer Engineer @ UNAM"
+  - "Building healthcare software at Reina Madre"
+  - "I run a fleet of AI coding agents — and land their PRs"
+flightLog:
+  - { years: "2020–2024", place: "UNAM · School of Engineering", role: "B.S. Computer Engineering", notes: ["iOS, Kotlin, C & data structures, databases", "FPGA game 'Shark Eats Fish' on a DE10-Lite"] }
+  - { years: "2023", place: "iOS Lab · UNAM", role: "iOS Developer (Swift)", notes: ["Equipment-loan app with student-ID and barcode scanning"] }
+  - { years: "2024–", place: "Serviap Global", role: "Software Developer & Automation", notes: ["Serviap Hub: 4-role procurement system, state-machine approvals", "PO PDFs: AWS Lambda + Puppeteer + S3 presigned URLs", "CFO treasury dashboard: 45+ accounts, 5 currencies"] }
+  - { years: "now", place: "Reina Madre", role: "Software Engineer · Healthcare platform", notes: ["Next.js 15 · PostgreSQL 16 + Drizzle · AWS Cognito · ECS Fargate", "Parallel AI-agent lanes with guard hooks, adversarial review and bot verdicts"] }

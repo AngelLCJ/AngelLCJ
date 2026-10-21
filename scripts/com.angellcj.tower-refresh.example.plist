@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Copy to ~/Library/LaunchAgents/com.angellcj.tower-refresh.plist, fill the two placeholders, then:
+     launchctl load ~/Library/LaunchAgents/com.angellcj.tower-refresh.plist -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.angellcj.tower-refresh</string>
+  <key>ProgramArguments</key>
+  <array><string>/bin/bash</string><string>-lc</string><string>/PATH/TO/AngelLCJ/scripts/tower-refresh.sh</string></array>
+  <key>EnvironmentVariables</key>
+  <dict><key>TOWER_WORK_REPO</key><string>OWNER/REPO</string></dict>
+  <key>StartCalendarInterval</key>
+  <dict><key>Hour</key><integer>9</integer><key>Minute</key><integer>30</integer></dict>
+  <key>StandardErrorPath</key><string>/tmp/tower-refresh.log</string>
+</dict>
+</plist>
