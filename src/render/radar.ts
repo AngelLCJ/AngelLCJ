@@ -9,7 +9,7 @@ const CX = 175;
 const CY = 160;
 const R = 128;
 const MAX_PR_BLIPS = 40;
-const SWEEP_SECONDS = 4;
+const SWEEP_SECONDS = { day: 4, night: 12 } as const;
 
 export interface RadarInput {
   stats: Stats | null;
@@ -34,9 +34,9 @@ function scope(color: string, day: boolean): string {
   const cross = `<path d="M${CX - R} ${CY}H${CX + R}M${CX} ${CY - R}V${CY + R}" stroke="${color}" stroke-opacity="0.18"/>`;
   const [ex, ey] = polar(-Math.PI / 4, R);
   const wedge = `<path d="M${CX} ${CY}L${CX + R} ${CY}A${R} ${R} 0 0 0 ${ex} ${ey}Z" fill="${color}" fill-opacity="0.2"/>`;
-  const spin = day
-    ? `<animateTransform attributeName="transform" type="rotate" from="0 ${CX} ${CY}" to="360 ${CX} ${CY}" dur="${SWEEP_SECONDS}s" repeatCount="indefinite"/>`
-    : "";
+  // Always moving, so visitors in other time zones never see a frozen tower; night is just slower.
+  const dur = SWEEP_SECONDS[day ? "day" : "night"];
+  const spin = `<animateTransform attributeName="transform" type="rotate" from="0 ${CX} ${CY}" to="360 ${CX} ${CY}" dur="${dur}s" repeatCount="indefinite"/>`;
   return `${rings}${cross}<g class="sweep" transform="rotate(-60 ${CX} ${CY})">${wedge}${spin}</g>`;
 }
 

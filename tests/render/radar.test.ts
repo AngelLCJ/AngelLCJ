@@ -16,11 +16,17 @@ describe("renderRadar", () => {
     expect(svg).toContain("TOWER ON DUTY");
     expect(svg).toContain("ÁNGEL CORREA");
   });
-  it("freezes the sweep at night", () => {
+  it("sweeps once every 4 seconds during the day", () => {
+    expect(renderRadar(base)).toMatch(/<animateTransform[^>]*dur="4s"/);
+  });
+  it("keeps sweeping slowly at night so the tower never looks frozen", () => {
     const svg = renderRadar({ ...base, shift: "night" });
     expectWellFormed(svg);
     expect(svg).toContain("NIGHT SHIFT · AUTOPILOT ENGAGED");
-    expect(svg).not.toContain("animateTransform");
+    expect(svg).toMatch(/<animateTransform[^>]*dur="12s"/);
+  });
+  it("stops the fleet pulse at night", () => {
+    expect(renderRadar({ ...base, shift: "night" })).not.toContain('attributeName="r"');
   });
   it("draws one blip per merged PR this week", () => {
     expect(prBlips(renderRadar(base))).toBe(24);
